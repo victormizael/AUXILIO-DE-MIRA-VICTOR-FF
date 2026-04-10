@@ -2,6 +2,10 @@
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
+
+<!-- 🔥 ESSA LINHA RESOLVE O PROBLEMA -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Victor FF</title>
 
 <style>
@@ -11,6 +15,7 @@ body {
     font-family: Arial;
     overflow: hidden;
     color: white;
+    font-size: 16px;
 }
 
 /* fundo matrix */
@@ -26,7 +31,10 @@ canvas {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 280px;
+    
+    width: 90%;            /* 🔥 responsivo */
+    max-width: 320px;      /* 🔥 limite */
+    
     padding: 15px;
     background: rgba(0,0,0,0.9);
     border: 2px solid red;
@@ -37,12 +45,13 @@ canvas {
 .menu h2 {
     text-align: center;
     color: red;
+    font-size: 22px;
 }
 
 .row {
     display: flex;
     justify-content: space-between;
-    margin: 8px 0;
+    margin: 10px 0;
 }
 
 input[type="checkbox"] {
@@ -56,7 +65,7 @@ input[type="range"] {
 
 select {
     width: 100%;
-    padding: 5px;
+    padding: 6px;
     background: black;
     color: white;
     border: 1px solid red;
@@ -66,7 +75,7 @@ select {
 .radio {
     display: flex;
     align-items: center;
-    margin: 6px 0;
+    margin: 8px 0;
     cursor: pointer;
 }
 
@@ -86,7 +95,7 @@ select {
 .btn {
     margin-top: 15px;
     width: 100%;
-    padding: 12px;
+    padding: 14px;
     background: red;
     border: none;
     color: white;
@@ -94,9 +103,10 @@ select {
     border-radius: 8px;
     cursor: pointer;
     box-shadow: 0 0 15px red;
+    font-size: 16px;
 }
 
-/* 🔥 tela de injeção */
+/* tela de injeção */
 #loading {
     position: fixed;
     top:0;left:0;
@@ -173,11 +183,9 @@ select {
         <span>Aimbot ao olhar</span>
     </div>
 
-    <!-- 🔥 BOTÃO NOVO -->
     <button class="btn" onclick="inject()">INJETAR</button>
 </div>
 
-<!-- 🔥 TELA INJETANDO -->
 <div id="loading">
     <h2 style="color:red;">INJETANDO...</h2>
 
@@ -189,13 +197,11 @@ select {
 </div>
 
 <script>
-// rádio
 function selectRadio(el){
     document.querySelectorAll(".radio").forEach(r=>r.classList.remove("active"));
     el.classList.add("active");
 }
 
-// 🔥 INJETAR
 function inject(){
     const loading = document.getElementById("loading");
     const bar = document.getElementById("bar");
@@ -216,16 +222,14 @@ function inject(){
 
             status.innerText = "Abrindo Free Fire...";
 
-            // tentativa de abrir app
             setTimeout(()=>{
                 window.location.href = "intent://#Intent;package=com.dts.freefireth;end";
             }, 800);
         }
 
-    }, 30); // ~3 segundos
+    }, 30);
 }
 
-// 🔴 MATRIX
 const canvas = document.getElementById("matrix");
 const ctx = canvas.getContext("2d");
 
@@ -264,4 +268,4 @@ setInterval(draw, 33);
 </script>
 
 </body>
-</html>
+    </html>
