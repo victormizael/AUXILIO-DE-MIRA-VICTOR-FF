@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Victor FF</title>
+
+<style>
+body {
+    margin: 0;
+    background: black;
+    font-family: Arial;
+    overflow: hidden;
+    color: white;
+}
+
+/* fundo matrix */
+canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+/* menu */
+.menu {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 280px;
+    padding: 15px;
+    background: rgba(0,0,0,0.9);
+    border: 2px solid red;
+    border-radius: 10px;
+    box-shadow: 0 0 25px red;
+}
+
+.menu h2 {
+    text-align: center;
+    color: red;
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
+    margin: 8px 0;
+}
+
+input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+}
+
+input[type="range"] {
+    width: 100%;
+}
+
+select {
+    width: 100%;
+    padding: 5px;
+    background: black;
+    color: white;
+    border: 1px solid red;
+}
+
+/* radio */
+.radio {
+    display: flex;
+    align-items: center;
+    margin: 6px 0;
+    cursor: pointer;
+}
+
+.radio-circle {
+    width: 14px;
+    height: 14px;
+    border: 2px solid red;
+    border-radius: 50%;
+    margin-right: 8px;
+}
+
+.radio.active .radio-circle {
+    background: red;
+}
+
+/* botão */
+.btn {
+    margin-top: 15px;
+    width: 100%;
+    padding: 12px;
+    background: red;
+    border: none;
+    color: white;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 0 15px red;
+}
+
+/* 🔥 tela de injeção */
+#loading {
+    position: fixed;
+    top:0;left:0;
+    width:100%;height:100%;
+    background:black;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    z-index:999;
+}
+
+.barBox {
+    width:220px;
+    height:12px;
+    border:1px solid red;
+    margin-top:10px;
+}
+
+.bar {
+    height:100%;
+    width:0;
+    background:red;
+}
+</style>
+
+</head>
+<body>
+
+<canvas id="matrix"></canvas>
+
+<div class="menu">
+    <h2>Victor FF</h2>
+
+    <div class="row">
+        <span>Aimbot</span>
+        <input type="checkbox">
+    </div>
+
+    <div class="row">
+        <span>No Recoil</span>
+        <input type="checkbox">
+    </div>
+
+    <div class="row">
+        <span>Aim Lock</span>
+        <input type="checkbox">
+    </div>
+
+    <div>
+        <span>Aim FOV</span>
+        <input type="range">
+    </div>
+
+    <div>
+        <span>Precisão</span>
+        <input type="range">
+    </div>
+
+    <div>
+        <select>
+            <option>Cabeça</option>
+            <option>Pescoço</option>
+        </select>
+    </div>
+
+    <div class="radio" onclick="selectRadio(this)">
+        <div class="radio-circle"></div>
+        <span>Aimbot ao atirar</span>
+    </div>
+
+    <div class="radio" onclick="selectRadio(this)">
+        <div class="radio-circle"></div>
+        <span>Aimbot ao olhar</span>
+    </div>
+
+    <!-- 🔥 BOTÃO NOVO -->
+    <button class="btn" onclick="inject()">INJETAR</button>
+</div>
+
+<!-- 🔥 TELA INJETANDO -->
+<div id="loading">
+    <h2 style="color:red;">INJETANDO...</h2>
+
+    <div class="barBox">
+        <div id="bar" class="bar"></div>
+    </div>
+
+    <p id="status">0%</p>
+</div>
+
+<script>
+// rádio
+function selectRadio(el){
+    document.querySelectorAll(".radio").forEach(r=>r.classList.remove("active"));
+    el.classList.add("active");
+}
+
+// 🔥 INJETAR
+function inject(){
+    const loading = document.getElementById("loading");
+    const bar = document.getElementById("bar");
+    const status = document.getElementById("status");
+
+    loading.style.display = "flex";
+
+    let progress = 0;
+
+    let interval = setInterval(()=>{
+        progress++;
+
+        bar.style.width = progress + "%";
+        status.innerText = progress + "%";
+
+        if(progress >= 100){
+            clearInterval(interval);
+
+            status.innerText = "Abrindo Free Fire...";
+
+            // tentativa de abrir app
+            setTimeout(()=>{
+                window.location.href = "intent://#Intent;package=com.dts.freefireth;end";
+            }, 800);
+        }
+
+    }, 30); // ~3 segundos
+}
+
+// 🔴 MATRIX
+const canvas = document.getElementById("matrix");
+const ctx = canvas.getContext("2d");
+
+canvas.height = window.innerHeight;
+canvas.width = window.innerWidth;
+
+const letters = "01ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const fontSize = 14;
+const columns = canvas.width / fontSize;
+
+const drops = [];
+for(let i = 0; i < columns; i++){
+    drops[i] = 1;
+}
+
+function draw(){
+    ctx.fillStyle = "rgba(0,0,0,0.05)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = "#0F0";
+    ctx.font = fontSize + "px Arial";
+
+    for(let i = 0; i < drops.length; i++){
+        const text = letters[Math.floor(Math.random()*letters.length)];
+        ctx.fillText(text, i*fontSize, drops[i]*fontSize);
+
+        if(drops[i]*fontSize > canvas.height && Math.random() > 0.975){
+            drops[i] = 0;
+        }
+
+        drops[i]++;
+    }
+}
+
+setInterval(draw, 33);
+</script>
+
+</body>
+</html>
